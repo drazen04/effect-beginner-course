@@ -12,6 +12,9 @@ importers:
         specifier: ^3.14.1
         version: 3.14.1
     devDependencies:
+      '@types/node':
+        specifier: ^22.13.11
+        version: 22.13.11
       tsx:
         specifier: ^4.19.3
         version: 4.19.3
@@ -174,6 +177,9 @@ packages:
   '@standard-schema/spec@1.0.0':
     resolution: {integrity: sha512-m2bOd0f2RT9k8QJx1JN85cZYyH1RqFBdlwtkSlf4tBDYLCiiZnv1fIIwacK6cqwXavOydf0NPToMQgpKq+dVlA==}
 
+  '@types/node@22.13.11':
+    resolution: {integrity: sha512-iEUCUJoU0i3VnrCmgoWCXttklWcvoCIx4jzcP22fioIVSdTmjgoEvmAO/QPw6TcS9k5FrNgn4w7q5lGOd1CT5g==}
+
   effect@3.14.1:
     resolution: {integrity: sha512-YrE6KYUu8r+fF3/cvdM+SZRZRjarVGhfcJwQjP/YyMmF79fwE1Rf0nWqLZ9Xfw7a9njm5/wmrYP83RYt5WTTbQ==}
 
@@ -209,6 +215,9 @@ packages:
     resolution: {integrity: sha512-aJn6wq13/afZp/jT9QZmwEjDqqvSGp1VT5GVg+f/t6/oVyrgXM6BY1h9BRh/O5p3PlUPAe+WuiEZOmb/49RqoQ==}
     engines: {node: '>=14.17'}
     hasBin: true
+
+  undici-types@6.20.0:
+    resolution: {integrity: sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg==}
 
 snapshots:
 
@@ -289,6 +298,10 @@ snapshots:
 
   '@standard-schema/spec@1.0.0': {}
 
+  '@types/node@22.13.11':
+    dependencies:
+      undici-types: 6.20.0
+
   effect@3.14.1:
     dependencies:
       '@standard-schema/spec': 1.0.0
@@ -345,3 +358,5 @@ snapshots:
       fsevents: 2.3.3
 
   typescript@5.8.2: {}
+
+  undici-types@6.20.0: {}
