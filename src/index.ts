@@ -1,22 +1,19 @@
-import { Console, Effect } from "effect";
+import { Effect } from "effect";
 
-const fetchRequest = Effect.promise(() =>
+const fetchRequest = Effect.tryPromise(() =>
   fetch("https://pokeapi.co/api/v2/pokemon/garchomp/")
 );
 const jsonResponse = (response: Response) =>
-          Effect.promise(() => response.json()); 
+          Effect.tryPromise(() => response.json()); 
 
-const main = Effect.flatMap(
-  fetchRequest,
-  jsonResponse
-)
+const main = Effect.flatMap(fetchRequest, jsonResponse)
 
 Effect.runPromise(main)
 
 // Eager version
 // const main = async () => {
-//     const response = await fetchRequest();
-//     const json = await fetchResponse(response);
+//     const response = await fetch("https://pokeapi.co/api/v2/pokemon/garchomp/");
+//     const json = await response.json();
 //     return json;
 //   };
   
