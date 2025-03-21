@@ -8,7 +8,7 @@ const jsonResponse = (response: Response) =>
 
 const main = Effect.flatMap(fetchRequest, jsonResponse)
 
-Effect.runPromise(main)
+Effect.runPromise(main).then(console.log)
 
 // Eager version
 // const main = async () => {
