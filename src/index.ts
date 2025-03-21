@@ -1,6 +1,9 @@
+const fetchRequest = () => fetch("https://pokeapi.co/api/v2/pokemon/garchomp/")
+const fetchResponse = (response: Response) => response.json()
+
 const main = async () => {
-    const response = await fetch("https://pokeapi.co/api/v2/pokemon/garchomp/");
-    const json = await response.json();
+    const response = await fetchRequest();
+    const json = await fetchResponse(response);
     return json;
   };
   
