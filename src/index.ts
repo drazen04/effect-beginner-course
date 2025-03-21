@@ -1,10 +1,23 @@
-const fetchRequest = () => fetch("https://pokeapi.co/api/v2/pokemon/garchomp/")
-const fetchResponse = (response: Response) => response.json()
+import { Console, Effect } from "effect";
 
-const main = async () => {
-    const response = await fetchRequest();
-    const json = await fetchResponse(response);
-    return json;
-  };
+const fetchRequest = Effect.promise(() =>
+  fetch("https://pokeapi.co/api/v2/pokemon/garchomp/")
+);
+const jsonResponse = (response: Response) =>
+          Effect.promise(() => response.json()); 
+
+const main = Effect.flatMap(
+  fetchRequest,
+  jsonResponse
+)
+
+Effect.runPromise(main)
+
+// Eager version
+// const main = async () => {
+//     const response = await fetchRequest();
+//     const json = await fetchResponse(response);
+//     return json;
+//   };
   
-  main().then(console.log);
+//   main().then(console.log);
