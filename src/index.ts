@@ -1,4 +1,5 @@
 import { Effect } from "effect";
+import { request } from "http";
 
 
 interface FetchError {
@@ -24,6 +25,10 @@ const savePokemon = (pokemon: unknown) =>
   Effect.tryPromise(() => fetch("/api/pokemon", {body: JSON.stringify(pokemon)}))
 
 const main = fetchRequest.pipe(
+  Effect.filterOrFail(
+    (request) => request.ok,
+    (): FetchError => ({_tag: "Fetch Error"})
+  ),
   Effect.flatMap(jsonResponse),
   Effect.catchTags({
     "Fetch Error": () => Effect.succeed("Fetch Error"),
