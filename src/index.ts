@@ -1,4 +1,3 @@
-import { error } from "console";
 import { Effect } from "effect";
 
 
@@ -28,7 +27,7 @@ const main = fetchRequest.pipe(
   Effect.flatMap(jsonResponse),
   Effect.catchTag("Fetch Error", () => Effect.succeed("Fetch Error")),
   Effect.catchTag("JSON Error", () => Effect.succeed("JSON error")),
-  Effect.flatMap(savePokemon),
+  // still not working Effect.flatMap(savePokemon),
 )
 
 Effect.runPromise(main).then(console.log)
