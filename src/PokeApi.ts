@@ -7,7 +7,7 @@ import { BuildPokeApiUrl } from "./BuildPokeApiUrl";
 /**
  * extract implementation is very useful to avoiding sync interface
  * and implementation itself.
- * So now we can use "typeof make" as shape declararion and only "make" as concrete implementation 
+ * So now we can use "typeof make" as shape declararion and only "make" as service implementation 
  */
 const make = Effect.gen(function* () {
     /**
@@ -42,11 +42,11 @@ const make = Effect.gen(function* () {
 })
 
 /**
- * using class that extends Context.Tab is a convinient way to:
- * - avoid connflicts between service types
+ * using class that extends Context.Tag is a convinient way to:
+ * - avoid conflicts between service types
  *  - could be also achieved by creating and passing interface with unique symbol 
  * - having only one declaration/value
- * - collect all implementation inside the class as static member such as Live-Test-Mock-Dev
+ * - create all Layers inside the class as static attribute such as Live-Test-Mock-Dev
  */
 export class PokeApi extends Context.Tag("PokeApi")<PokeApi, Effect.Effect.Success<typeof make>>() {
     static readonly Live = Layer.effect(this, make).pipe(
