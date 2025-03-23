@@ -1,4 +1,14 @@
-import { Data, Effect } from "effect";
+import { Data, Effect, Schema } from "effect";
+
+const Pokemon = Schema.Struct({
+  id: Schema.Number,
+  order: Schema.Number,
+  name: Schema.String,
+  height: Schema.Number,
+  weight: Schema.Number
+})
+
+const decodePokemon = Schema.decodeUnknown(Pokemon)
 
 class FetchError extends Data.TaggedError("Fetch Error")<{}> {}
 class JsonError extends Data.TaggedError("Json Error")<{}> {}
@@ -23,13 +33,15 @@ const program = Effect.gen(function* () {
   if (!request.ok) {
     return yield* new FetchError();
   }
-  return yield* jsonResponse(request);
+  const json = yield* jsonResponse(request);
+  return yield* decodePokemon(json);
 })
 
 const main = program.pipe(
   Effect.catchTags({
     "Fetch Error": () => Effect.succeed("Fetch Error"),
-    "Json Error": () => Effect.succeed("Json Error")
+    "Json Error": () => Effect.succeed("Json Error"),
+    "ParseError": () => Effect.succeed("Parse Error"),
   })
   // still not working Effect.flatMap(savePokemon), 
 )
