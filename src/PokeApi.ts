@@ -9,32 +9,37 @@ import { BuildPokeApiUrl } from "./BuildPokeApiUrl";
  * and implementation itself.
  * So now we can use "typeof make" as shape declararion and only "make" as concrete implementation 
  */
-const make = {
-    getPokemon: Effect.gen(function* () {
-        const pokemonCollection = yield* PokemonCollection;
-        const buildPokeApiUrl = yield* BuildPokeApiUrl;
-        
-        const requestUrl = buildPokeApiUrl({
-            name: pokemonCollection[0]
+const make = Effect.gen(function* () {
+    /**
+     * Lift dependencies at service level since multiple functions could use them
+     */
+    const pokemonCollection = yield* PokemonCollection;
+    const buildPokeApiUrl = yield* BuildPokeApiUrl;
+
+    return {
+        getPokemon: Effect.gen(function* () {
+            const requestUrl = buildPokeApiUrl({
+                name: pokemonCollection[0]
+            })
+            
+            const response = yield* Effect.tryPromise({
+                try: () => fetch(requestUrl),
+                catch: () => new FetchError()
+            });
+            
+            if (!response.ok) {
+                return yield* new FetchError();
+            }
+            
+            const json = yield* Effect.tryPromise({
+                try: () => response.json(),
+                catch: () => new JsonError()
+            });
+            
+            return yield* Schema.decodeUnknown(Pokemon)(json);
         })
-        
-        const response = yield* Effect.tryPromise({
-            try: () => fetch(requestUrl),
-            catch: () => new FetchError()
-        });
-        
-        if (!response.ok) {
-            return yield* new FetchError();
-        }
-        
-        const json = yield* Effect.tryPromise({
-            try: () => response.json(),
-            catch: () => new JsonError()
-        });
-        
-        return yield* Schema.decodeUnknown(Pokemon)(json);
-    })
-}
+    }
+})
 
 /**
  * using class that extends Context.Tab is a convinient way to:
@@ -43,6 +48,13 @@ const make = {
  * - having only one declaration/value
  * - collect all implementation inside the class as static member such as Live-Test-Mock-Dev
  */
-export class PokeApi extends Context.Tag("PokeApi")<PokeApi, typeof make>() {
-    static readonly Live = Layer.succeed(this, make)
+export class PokeApi extends Context.Tag("PokeApi")<PokeApi, Effect.Effect.Success<typeof make>>() {
+    static readonly Live = Layer.effect(this, make).pipe(
+        Layer.provide(
+            Layer.mergeAll(
+                PokemonCollection.Live,
+                BuildPokeApiUrl.Live
+            )
+        )
+    )
 }
