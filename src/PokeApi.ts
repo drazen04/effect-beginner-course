@@ -56,5 +56,18 @@ export class PokeApi extends Context.Tag("PokeApi")<PokeApi, Effect.Effect.Succe
                 BuildPokeApiUrl.Live
             )
         )
+    );
+
+    static readonly Mock = Layer.succeed(
+        this,
+        PokeApi.of({
+            getPokemon: Effect.succeed({
+                id: 1,
+                name: "snorlax",
+                height: 25,
+                weight: 134,
+                order: 1
+            })
+        })
     )
 }
