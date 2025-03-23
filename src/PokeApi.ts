@@ -53,7 +53,7 @@ export class PokeApi extends Context.Tag("PokeApi")<PokeApi, Effect.Effect.Succe
         Layer.provide(
             Layer.mergeAll(
                 PokemonCollection.Default,
-                BuildPokeApiUrl.Live
+                BuildPokeApiUrl.Default
             )
         )
     );
