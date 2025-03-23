@@ -1,12 +1,12 @@
 import { Data, Effect, Schema } from "effect";
 
-const Pokemon = Schema.Struct({
+class Pokemon extends Schema.Class<Pokemon>("Pokemon")({
   id: Schema.Number,
   order: Schema.Number,
   name: Schema.String,
   height: Schema.Number,
   weight: Schema.Number
-})
+}) {} 
 
 const decodePokemon = Schema.decodeUnknown(Pokemon)
 
