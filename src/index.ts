@@ -17,6 +17,15 @@ const jsonResponse = (response: Response) =>
 const savePokemon = (pokemon: unknown) =>
   Effect.tryPromise(() => fetch("/api/pokemon", {body: JSON.stringify(pokemon)}))
 
+
+const program = Effect.gen(function* () {
+  const request = yield* fetchRequest;
+  if (!request.ok) {
+    return yield* new FetchError();
+  }
+  return yield* jsonResponse(request);
+})
+
 const main = fetchRequest.pipe(
   Effect.filterOrFail(
     (request) => request.ok,
