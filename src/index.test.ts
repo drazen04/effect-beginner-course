@@ -1,7 +1,7 @@
 import {afterAll, afterEach, beforeAll, expect, it} from "vitest"
-import { servers } from "./node"
+import { servers } from "../test/node"
 import { Layer, Effect, ConfigProvider, ManagedRuntime } from "effect";
-import { PokeApi } from "../src/PokeApi";
+import { PokeApi } from "./PokeApi";
 
 beforeAll(() => servers.listen());
 afterEach(() => servers.resetHandlers())
