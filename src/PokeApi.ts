@@ -8,7 +8,8 @@ import { BuildPokeApiUrl } from "./BuildPokeApiUrl";
 interface PokeApiImpl {
     readonly getPokemon: Effect.Effect<
         Pokemon,
-        FetchError | JsonError | ParseResult.ParseError | ConfigError
+        FetchError | JsonError | ParseResult.ParseError | ConfigError,
+        PokemonCollection | BuildPokeApiUrl
     >;
 }
 
