@@ -1,9 +1,6 @@
 import { Config, Data, Effect, Schema } from "effect";
 import { Pokemon } from "./schemas";
-
-
-class FetchError extends Data.TaggedError("FetchError")<{}> {}
-class JsonError extends Data.TaggedError("JsonError")<{}> {}
+import { FetchError, JsonError } from "./errors";
 
 
 const savePokemon = (pokemon: unknown) =>
