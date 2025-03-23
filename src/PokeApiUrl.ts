@@ -8,7 +8,7 @@ export class PokeApiUrl extends Context.Tag("PokeApiUrl")<
         this,
         Effect.gen(function* () {
             const baseUrl = yield* Config.string("BASE_URL")
-            return PokeApiUrl.of(`${baseUrl}/api/v2/pokemon`)
+            return `${baseUrl}/api/v2/pokemon`
         })
     )
 }
