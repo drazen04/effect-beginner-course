@@ -10,8 +10,8 @@ const Pokemon = Schema.Struct({
 
 const decodePokemon = Schema.decodeUnknown(Pokemon)
 
-class FetchError extends Data.TaggedError("Fetch Error")<{}> {}
-class JsonError extends Data.TaggedError("Json Error")<{}> {}
+class FetchError extends Data.TaggedError("FetchError")<{}> {}
+class JsonError extends Data.TaggedError("JsonError")<{}> {}
 
 const fetchRequest = Effect.tryPromise({
   try: () => fetch("https://pokeapi.co/api/v2/pokemon/garchomp/"),
@@ -39,8 +39,8 @@ const program = Effect.gen(function* () {
 
 const main = program.pipe(
   Effect.catchTags({
-    "Fetch Error": () => Effect.succeed("Fetch Error"),
-    "Json Error": () => Effect.succeed("Json Error"),
+    "FetchError": () => Effect.succeed("Fetch Error"),
+    "JsonError": () => Effect.succeed("Json Error"),
     "ParseError": () => Effect.succeed("Parse Error"),
   })
   // still not working Effect.flatMap(savePokemon), 
