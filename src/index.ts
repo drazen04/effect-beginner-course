@@ -26,17 +26,12 @@ const program = Effect.gen(function* () {
   return yield* jsonResponse(request);
 })
 
-const main = fetchRequest.pipe(
-  Effect.filterOrFail(
-    (request) => request.ok,
-    () => new FetchError()
-  ),
-  Effect.flatMap(jsonResponse),
+const main = program.pipe(
   Effect.catchTags({
     "Fetch Error": () => Effect.succeed("Fetch Error"),
     "Json Error": () => Effect.succeed("Json Error")
   })
-  // still not working Effect.flatMap(savePokemon),
+  // still not working Effect.flatMap(savePokemon), 
 )
 
 Effect.runPromise(main).then(console.log)
