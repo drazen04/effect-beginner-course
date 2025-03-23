@@ -1,8 +1,8 @@
-import { Array, Context } from "effect";
+import { Array, Context, Layer } from "effect";
 
 export class PokemonCollection extends Context.Tag("PokemonCollection")<
     PokemonCollection,
     Array.NonEmptyArray<string>
 >() {
-    static readonly Live = PokemonCollection.of(["staryu", "perrserker", "flaaffy"])
+    static readonly Live = Layer.succeed(this, ["staryu", "perrserker", "flaaffy"])
 }

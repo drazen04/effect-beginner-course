@@ -1,4 +1,4 @@
-import { Context, Effect, Schema } from "effect";
+import { Context, Effect, Layer, Schema } from "effect";
 import { Pokemon } from "./schemas";
 import { FetchError, JsonError } from "./errors";
 import { PokemonCollection } from "./PokemonCollection";
@@ -44,5 +44,5 @@ const make = {
  * - collect all implementation inside the class as static member such as Live-Test-Mock-Dev
  */
 export class PokeApi extends Context.Tag("PokeApi")<PokeApi, typeof make>() {
-    static readonly Live = PokeApi.of(make)
+    static readonly Live = Layer.succeed(this, make)
 }
