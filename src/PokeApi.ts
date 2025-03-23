@@ -7,7 +7,9 @@ import { BuildPokeApiUrl } from "./BuildPokeApiUrl";
 /**
  * extract implementation is very useful to avoiding sync interface
  * and implementation itself.
- * So now we can use "typeof make" as shape declararion and only "make" as service implementation 
+ * So now we can use "typeof make" as shape declararion and only "make" as service implementation
+ * 
+ * With Effect.Service it is not needed anymore, but I will use it for better readability
  */
 const make = Effect.gen(function* () {
     /**
@@ -42,32 +44,22 @@ const make = Effect.gen(function* () {
 })
 
 /**
- * using class that extends Context.Tag is a convinient way to:
+ * using class that extends Context.Tag is a convenient way to:
  * - avoid conflicts between service types
  *  - could be also achieved by creating and passing interface with unique symbol 
  * - having only one declaration/value
  * - create all Layers inside the class as static attribute such as Live-Test-Mock-Dev
  */
-export class PokeApi extends Context.Tag("PokeApi")<PokeApi, Effect.Effect.Success<typeof make>>() {
-    static readonly Live = Layer.effect(this, make).pipe(
-        Layer.provide(
-            Layer.mergeAll(
-                PokemonCollection.Default,
-                BuildPokeApiUrl.Default
-            )
-        )
-    );
 
-    static readonly Mock = Layer.succeed(
-        this,
-        PokeApi.of({
-            getPokemon: Effect.succeed({
-                id: 1,
-                name: "snorlax",
-                height: 25,
-                weight: 134,
-                order: 1
-            })
-        })
-    )
-}
+/**
+ * using class that extends Effect.Service is even more convenient way to create
+ * a default service implementation and Layer without using make
+ */
+
+export class PokeApi extends Effect.Service<PokeApi>()(
+    "PokeApi",
+    {
+        effect: make,
+        dependencies: [PokemonCollection.Default, BuildPokeApiUrl.Default]
+    }
+) {}
